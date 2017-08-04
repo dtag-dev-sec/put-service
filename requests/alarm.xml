@@ -5,6 +5,21 @@
     </Authentication>
 
     <Alert>
+        <Analyzer id="kippo-community-01"/>
+        <CreateTime tz="+0000">2017-08-01 03:30:31</CreateTime>
+        <Source category="ipv4" port="" protocol="tcp">90.230.47.79</Source>
+        <Target category="ipv4" port="22" protocol="tcp">191.209.200.111</Target>
+        <Request type="description">SSH Honeypot Kippo</Request>
+        <AdditionalData meaning="username" type="string">admin</AdditionalData>
+        <AdditionalData meaning="password" type="string"></AdditionalData>
+        <AdditionalData meaning="sqliteid" type="string">3</AdditionalData>
+        <AdditionalData meaning="version" type="string">SSH-2.0-libssh-0.6.0</AdditionalData>
+        <AdditionalData meaning="starttime" type="string">2017-08-01%2003%3A30%3A28</AdditionalData>
+        <AdditionalData meaning="login" type="string">Success</AdditionalData>
+        <AdditionalData meaning="endtime" type="string">2017-08-01%2005%3A32%3A19</AdditionalData>
+    </Alert>
+
+    <Alert>
         <Analyzer id="MSTest4"/>
         <CreateTime tz="+0200">2017-04-11 09:10:21</CreateTime>
         <Source category="ipv4" port="" protocol="tcp">193.99.144.95</Source>

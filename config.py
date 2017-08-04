@@ -3,10 +3,10 @@ import sys, getopt
 
 
 
-def readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost):
+def readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost,debug):
     config = ConfigParser()
 
-    candidates = ['/etc/ews/ewsput.cfg', './ewsput.cfg']
+    candidates = ['/etc/ews/ewsput.cfg']
 
     config.read(candidates)
 
@@ -19,15 +19,22 @@ def readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohos
     mongohost = config.get('mongo', 'ip')
     mongoport = config.get('mongo', 'port')
 
-    return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, False)
+    debugCmd = config.get('general', 'debug')
+    if (debugCmd == "1"):
+        debug = True
+    else:
+        debug = False
+
+    return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, False, debug)
 
 
-def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile):
+def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug):
 
     #
     # Read command line args
     #
-    myopts, args = getopt.getopt(sys.argv[1:], "b:s:i:p:mh:mp:c")
+    myopts, args = getopt.getopt(sys.argv[1:], "b:s:i:p:mh:mp:c:d")
+    debugCmd = "0"
 
     for o, a in myopts:
         useConfigFile = False
@@ -44,7 +51,15 @@ def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mon
             mongohost = a
         elif o == '-mp':
             mongoport = a
+        elif o == '-d':
+            debugCmd = a
         elif o == '-c':
             createIndex = True
 
-    return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile)
+
+    if (debugCmd == "1"):
+        debug = True
+    else:
+        debug = False
+
+    return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug)

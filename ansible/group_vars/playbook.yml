@@ -1,0 +1,6 @@
+---
+- hosts: ews
+  remote_user: root
+  tasks:
+        - name: run this command and ignore the result
+          ping:

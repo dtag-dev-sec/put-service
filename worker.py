@@ -5,6 +5,7 @@ from bottle import request, response, install, run, post, get, HTTPResponse
 from datetime import datetime
 
 localServer, esindex, localPort, elasticHost, mongohost, mongoport = "", "", "", "", "", ""
+debug = False
 
 createIndex = False
 useConfigFile = True
@@ -107,7 +108,7 @@ def postSimpleMessage():
     raise HTTPResponse(message, status=200, headers=headers)
 
 
-(elasticHost, esindex, localServer, localPort, mongoport, mongohost,  createIndex, useConfigFile) = config.readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile)
+(elasticHost, esindex, localServer, localPort, mongoport, mongohost,  createIndex, useConfigFile, debug) = config.readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug)
 
 if (createIndex):
     print ("Info: Just creating an index " + esindex)
@@ -117,7 +118,7 @@ else:
 
     if (useConfigFile):
         print ("Info: Using configfile")
-        (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex) = config.readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost)
+        (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex,debug) = config.readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost, debug)
 
     #
     # start server depending on parameters given from shell or config file
