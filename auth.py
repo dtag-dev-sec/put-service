@@ -33,7 +33,7 @@ def extractAuth(tree):
     #
     # if we see more than one authentication structure, something is wrong
     #
-    if (counter == 1):
+    if (counter == 2):
         return usernameFromRequest, passwordFromRequest
     else:
         return "", ""
