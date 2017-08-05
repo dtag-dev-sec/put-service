@@ -3,3 +3,4 @@ supervisor stuff
 check for private IPs in submissions
 check for peer types
 change deploy script
+add parsing for kippo/cowrie

@@ -33,7 +33,7 @@ def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mon
     #
     # Read command line args
     #
-    myopts, args = getopt.getopt(sys.argv[1:], "b:s:i:p:mh:mp:c:d")
+    myopts, args = getopt.getopt(sys.argv[1:], "b:s:i:p:h:l:cd")
     debugCmd = "0"
 
     for o, a in myopts:
@@ -47,9 +47,9 @@ def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mon
             localPort = a
         elif o == '-b':
             localServer = a
-        elif o == '-mh':
+        elif o == '-h':
             mongohost = a
-        elif o == '-mp':
+        elif o == '-l':
             mongoport = a
         elif o == '-d':
             debugCmd = a

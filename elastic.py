@@ -64,11 +64,9 @@ def initIndex(host, index):
     es.indices.create(index=index, ignore=400, body=settings)
 
 
-def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType):
+def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, startTime, endTime):
 
     try:
-
-
 
         m = hashlib.md5()
         m.update((createTime + sourceip + destinationip).encode())
@@ -91,11 +89,19 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
                 "targetEntryIp": destinationip,
                 "targetCountry": countryTarget,
                 "targegEntryAS": asnTarget,
-                "username": "",
-                "password": "",
-                "targetport": ""
+                "username": username,
+                "password": password,
+                "login": loginStatus,
+                "targetport": "",
+                "clientVersion": version,
+                "sessionStart": startTime,
+                "sessionEnd": endTime,
+
 
             }
+
+
+
 
 
         es = Elasticsearch(host)

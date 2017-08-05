@@ -4,7 +4,7 @@ import elastic, auth, sys, getopt, config
 from bottle import request, response, install, run, post, get, HTTPResponse
 from datetime import datetime
 
-localServer, esindex, localPort, elasticHost, mongohost, mongoport = "", "", "", "", "", ""
+localServer, esindex, localPort, elasticHost, mongohost, mongoport = "127.0.0.1", "ews", "8080", "127.0.0.1", "127.0.0.1", "27017"
 debug = False
 
 createIndex = False
@@ -39,7 +39,7 @@ def handleAlerts(tree, tenant):
 
         # now parse the node
 
-        source, destination, createTime, url, analyzerID, peerType = "", "", "", "", "", ""
+        source, destination, createTime, url, analyzerID, peerType, username, password, loginStatus, version = "", "", "", "", "", "", "", ""
 
         for child in node:
 
@@ -49,6 +49,7 @@ def handleAlerts(tree, tenant):
                 source = child.text.replace('"', '')
             if (childName == "CreateTime"):
                 createTime = child.text
+
             if (childName == "Target"):
                 destination = child.text.replace('"', '')
 
@@ -58,10 +59,35 @@ def handleAlerts(tree, tenant):
                 if (type == "url"):
                     url = child.text
 
+                if (type == "description"):
+                    peerType = child.text
+
+            if (childName == "AdditionalData"):
+                meaning = child.attrib.get('meaning')
+
+                if (meaning == "username"):
+                    username = child.text
+
+                if (meaning == "password"):
+                    password = child.text
+
+                if (meaning == "login"):
+                    loginStatus = child.text
+
+                if (meaning == "version"):
+                    version = child.text
+
+                if (meaning == "starttime"):
+                    starttime = child.text
+
+                if (meaning == "endtime"):
+                        endtime = child.text
+
+
             if (childName == "Analyzer"):
                 analyzerID = child.attrib.get('id')
 
-        correction = elastic.putAlarm(elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType)
+        correction = elastic.putAlarm(elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime)
         counter = counter + 1 - correction
 
 

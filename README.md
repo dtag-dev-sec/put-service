@@ -21,7 +21,7 @@ python3 worker.py -p 9933 -b 192.168.1.64 -s 192.168.1.64 -i ews-2017.1
 
 -i index to be used on elasticsearch server
 
--mh mongohost
+-l mongohost
 
 -mp mongoport
 
