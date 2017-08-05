@@ -39,7 +39,7 @@ def handleAlerts(tree, tenant):
 
         # now parse the node
 
-        source, destination, createTime, url, analyzerID, peerType, username, password, loginStatus, version = "", "", "", "", "", "", "", ""
+        source, destination, createTime, url, analyzerID, peerType, username, password, loginStatus, version = "", "", "", "", "", "", "", "", "", ""
 
         for child in node:
 
