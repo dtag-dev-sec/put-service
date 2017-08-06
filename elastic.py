@@ -10,7 +10,7 @@ from elasticsearch import Elasticsearch
 def getGeoIP(sourceip, destinationip):
 
     gi = pygeoip.GeoIP("/var/lib/GeoIP/GeoIP.dat")
-    giCity = pygeoip.GeoIP("/var/lib/GeoIP/GeoCity.dat")
+    giCity = pygeoip.GeoIP("/var/lib/GeoIP/GeoLiteCity.dat")
     giASN = pygeoip.GeoIP('/var/lib/GeoIP/GeoIPASNum.dat')
 
 
