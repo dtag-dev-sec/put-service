@@ -1,4 +1,4 @@
-**Intro
+#Intro
 
 
 
@@ -21,7 +21,7 @@ Install Maxmind GeoIP libraries at /var/lib/
 
 **Example command line**
 
-python3 worker.py -p 9933 -b 192.168.1.64 -s 192.168.1.64 -i ews-2017.1
+    python3 worker.py -p 9933 -b 192.168.1.64 -s 192.168.1.64 -i ews-2017.1
 
 
 **Command line option**
@@ -44,7 +44,9 @@ python3 worker.py -p 9933 -b 192.168.1.64 -s 192.168.1.64 -i ews-2017.1
 
 Some auth code by Andre Vorbach
 
-Overall help, friendly extensions / comments by Markus Schroer
+Overall help, friendly extensions / comments / suggestions by Markus Schroer
+
+Valuable discussions with Marco Ochse and Rainer Schmidt
 
 **Used frameworks / tools:**
 
