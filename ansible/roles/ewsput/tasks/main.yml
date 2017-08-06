@@ -1,0 +1,47 @@
+
+---
+- name: Make sure the relevant directories exist for deployment
+  file: path="/opt/put-service" owner=root group=root mode=0755 recurse=yes state=directory
+
+- name: Create ews config dir
+  file: path="/ews/ews" owner=root group=root mode=0755 recurse=yes state=directory
+
+- name: Create maxmind geoip directory
+  file: path="/var/lib/GeoIP" owner=root group=root mode=0755 recurse=yes state=directory
+
+- name: Your copy task
+  copy: src={{ item.src }} dest={{ item.dest }}
+  with_items:
+    - { src: './../../../../worker.py', dest: '/opt/put-service/worker.py' }
+    - { src: './../../../../auth.py', dest: '/opt/put-service/auth.py' }
+    - { src: './../../../../config.py', dest: '/opt/put-service/config.py' }
+    - { src: './../../../../elastic.py', dest: '/opt/put-service/elastic.py' }
+
+- name: Get software for downloading.
+  apt: name={{ item }} state=present
+  with_items:
+    - nano
+    - wget
+    - curl
+    - unzip
+    - python-pip
+    - build-essential
+    - autoconf
+    - libtool
+    - pkg-config
+    - python-dev
+    - python3-dev
+
+- name: copy software from maxmind
+  copy: src={{ item.src }} dest={{ item.dest }}
+  with_items:
+    - { src: './../../../../var/lib/GeoIP/GeoLiteCity.dat', dest: '/var/lib/GeoIP/GeoLiteCity.dat' }
+    - { src: './../../../../var/lib/GeoIP/GeoIP.dat', dest: '/var/lib/GeoIP/GeoIP.dat' }
+    - { src: './../../../../var/lib/GeoIP/GeoIPASNum.dat', dest: '/var/lib/GeoIP/GeoIPASNum.dat' }
+
+
+
+
+
+
+

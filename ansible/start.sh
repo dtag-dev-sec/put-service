@@ -1,2 +1,7 @@
 #!/usr/bin/env bash
-ansible -i ./hosts all -m ping -u root -k -v
+
+cd ./../var/lib/GeoIP/
+./download.sh
+cd ./../../../ansible
+
+ansible-playbook -i ./hosts site.yml
