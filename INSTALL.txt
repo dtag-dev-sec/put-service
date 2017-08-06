@@ -1,16 +1,7 @@
 
-Create /var/lib/GeoIP
-copy files there
 
 
 apt-get install python-pip build-essential autoconf libtool pkg-config python-opengl python-imaging python-pyrex python-pyside.qtopengl idle-python2.7 qt4-dev-tools qt4-designer libqtgui4 libqtcore4 libqt4-xml libqt4-test libqt4-script libqt4-network libqt4-dbus python-qt4 python-qt4-gl libgle3 python-dev
 export https_proxy=https://192.168.1.194:3128/
-export http_proxy=http://192.168.1.194:3128/
-
-easy_install hashlib
-pip install -r requirements.txt
-
-gunicorn webservice:app -w 4 -b 192.168.1.64:9922 --error-logfile error.log --log-level error --pid gunicorn.pid
-gunicorn webservice:app -w 4 -b 192.168.1.173:9922 --error-logfile error.log --log-level error --pid gunicorn.pid
-
+export http_proxy=https://192.168.1.194:3128/
 
