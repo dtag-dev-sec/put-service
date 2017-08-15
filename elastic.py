@@ -64,7 +64,7 @@ def initIndex(host, index):
     es.indices.create(index=index, ignore=400, body=settings)
 
 
-def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, startTime, endTime):
+def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, startTime, endTime, sourcePort, destinationPort):
 
     try:
 
@@ -85,8 +85,10 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
                 "client": "-",
                 "location": str(lat) + " , " + str(long),
                 "sourceEntryIp": sourceip,
+                "sourceEntryPort": sourcePort,
                 "additionalData": "",
                 "targetEntryIp": destinationip,
+                "targetEntryPort": destinationPort,
                 "targetCountry": countryTarget,
                 "targegEntryAS": asnTarget,
                 "username": username,
@@ -97,12 +99,7 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
                 "sessionStart": startTime,
                 "sessionEnd": endTime,
 
-
             }
-
-
-
-
 
         es = Elasticsearch(host)
         res = es.index(index=index, doc_type='Alert', id=m.hexdigest(), body=alert)

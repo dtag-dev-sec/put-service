@@ -39,7 +39,7 @@ def handleAlerts(tree, tenant):
 
         # now parse the node
 
-        source, destination, createTime, url, analyzerID, peerType, username, password, loginStatus, version = "", "", "", "", "", "", "", "", "", ""
+        source, sourcePort, destination, destinationPort, createTime, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime =  "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 
         for child in node:
 
@@ -47,11 +47,15 @@ def handleAlerts(tree, tenant):
 
             if (childName == "Source"):
                 source = child.text.replace('"', '')
+                sourcePort = child.attrib.get('port')
+
             if (childName == "CreateTime"):
                 createTime = child.text
 
             if (childName == "Target"):
                 destination = child.text.replace('"', '')
+                destinationPort = child.attrib.get('port')
+
 
             if (childName == "Request"):
                 type = child.attrib.get('type')
@@ -87,13 +91,21 @@ def handleAlerts(tree, tenant):
             if (childName == "Analyzer"):
                 analyzerID = child.attrib.get('id')
 
-        correction = elastic.putAlarm(elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime)
+        correction = elastic.putAlarm(elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort)
         counter = counter + 1 - correction
 
 
     print ("Info: Added " + str(counter) + " entries")
     return True
 
+
+@get('/heartbeat')
+def index():
+    message = "A heartbeat for your"
+    response = {}
+    headers = {'Content-type': 'application/html'}
+    response['status'] = "Success"
+    raise HTTPResponse(message, status=200, headers=headers)
 
 
 @get('/')
