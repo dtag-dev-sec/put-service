@@ -2,12 +2,13 @@
 ---
 # This playbook deploys a ews collector instance and is proxy aware
 
-- hosts: ews1
+- hosts: ewstest
   remote_user: root
 
   vars:
     http_proxy: "{{ http_proxy }}"
     https_proxy: "{{ https_proxy }}"
+
 
   roles:
     - ewsput
