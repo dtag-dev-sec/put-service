@@ -4,7 +4,12 @@
   file: path="/opt/put-service" owner=root group=root mode=0755 recurse=yes state=directory
 
 - name: Create ews config dir
-  file: path="/ews/ews" owner=root group=root mode=0755 recurse=yes state=directory
+  file: path="/etc/ews" owner=root group=root mode=0755 recurse=yes state=directory
+
+- name: install template for configuration
+  template:
+        src=./roles/ewsput/templates/ewsput.j2
+        dest=/etc/ews/ewsput.cfg
 
 - name: Create maxmind geoip directory
   file: path="/var/lib/GeoIP" owner=root group=root mode=0755 recurse=yes state=directory
