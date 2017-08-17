@@ -88,7 +88,11 @@ def handleAlerts(tree, tenant):
                     url = child.text
 
                 if (type == "description"):
-                    peerType = child.text
+                    if (peerType == ""):
+                        peerType = child.text
+
+                    if ("WebHoneypot" in peerType):
+                        peerType = "Webpage";
 
             if (childName == "AdditionalData"):
                 meaning = child.attrib.get('meaning')

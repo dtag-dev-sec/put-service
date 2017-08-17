@@ -7,7 +7,8 @@ import hashlib
 from elasticsearch import Elasticsearch
 
 
-countries = ["RU", "Russia", "CN", "China", "DE", "Germany", "", ""]
+countries = ["RU", "Russia", "CN", "China", "DE", "Germany", "JP", "Japan" , "NL" , "Netherlands", "CA", "Canada", "GB", "United Kingdom", "CN", "China", "US", "USA",
+             "", ""]
 
 #
 #
@@ -93,7 +94,7 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
 
         alert = {
                 "country": country,
-                "countName": countryName,
+                "countryName": countryName,
                 "vulnid": "-",
                 "originalRequestString": url,
                 "sourceEntryAS": asn,
@@ -109,7 +110,7 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
                 "targetEntryIp": destinationip,
                 "targetEntryPort": destinationPort,
                 "targetCountry": countryTarget,
-                "targetCountyName": countryTargetName,
+                "targetCountryName": countryTargetName,
                 "targegEntryAS": asnTarget,
                 "username": username,                               # for ssh sessions
                 "password": password,                               # for ssh sessions
