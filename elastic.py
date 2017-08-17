@@ -7,6 +7,21 @@ import hashlib
 from elasticsearch import Elasticsearch
 
 
+countries = ["RU", "Russia", "CN", "China", "DE", "Germany", "", ""]
+
+#
+#
+#
+def getCountries(id):
+    for i in range (0,len(countries) - 2, 2):
+         shortCode = countries[i]
+         countryName = countries[i+1]
+
+         if (shortCode in id):
+             return countryName
+
+    return ""
+
 def getGeoIP(sourceip, destinationip):
 
     gi = pygeoip.GeoIP("/var/lib/GeoIP/GeoIP.dat")
@@ -18,10 +33,13 @@ def getGeoIP(sourceip, destinationip):
         lat = giCity.record_by_addr(sourceip)['latitude']
         long = giCity.record_by_addr(sourceip)['longitude']
         country = gi.country_code_by_addr(sourceip)
+        countryName = getCountries(country)
         asn = giASN.org_by_addr(sourceip)
         asnTarget = giASN.org_by_addr(destinationip)
         countryTarget = gi.country_code_by_addr(destinationip)
-        return (lat, long, country, asn, asnTarget, countryTarget)
+        countryTargetName = getCountries(countryTarget)
+
+        return (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName)
 
     except:
 
@@ -71,10 +89,11 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
         m = hashlib.md5()
         m.update((createTime + sourceip + destinationip).encode())
 
-        (lat, long, country, asn, asnTarget, countryTarget) = getGeoIP(sourceip,destinationip)
+        (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName) = getGeoIP(sourceip,destinationip)
 
         alert = {
                 "country": country,
+                "countName": countryName,
                 "vulnid": "-",
                 "originalRequestString": url,
                 "sourceEntryAS": asn,
@@ -90,14 +109,16 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
                 "targetEntryIp": destinationip,
                 "targetEntryPort": destinationPort,
                 "targetCountry": countryTarget,
+                "targetCountyName": countryTargetName,
                 "targegEntryAS": asnTarget,
-                "username": username,
-                "password": password,
-                "login": loginStatus,
+                "username": username,                               # for ssh sessions
+                "password": password,                               # for ssh sessions
+                "login": loginStatus,                               # for SSH sessions
                 "targetport": "",
                 "clientVersion": version,
                 "sessionStart": startTime,
                 "sessionEnd": endTime,
+
 
             }
 

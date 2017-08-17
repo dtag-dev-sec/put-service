@@ -10,6 +10,9 @@ debug = False
 createIndex = False
 useConfigFile = True
 
+peerIdents = ["honeytrap", "Network", "kippo", "SSH/console", "glastopf", "Webpage", ".gt3", "Webpage", ".dio", "Network", ".kip", "SSH/console", "", ""]
+
+
 #
 # Function area
 #
@@ -28,6 +31,22 @@ install(logger)
 
 
 
+
+
+#
+#
+#
+def getPeerType(id):
+    for i in range (0,len(peerIdents) - 2, 2):
+         honeypot = peerIdents[i]
+         peerType = peerIdents[i+1]
+
+         if (honeypot in id):
+             return peerType
+
+    return ""
+
+
 #
 #
 #
@@ -44,6 +63,11 @@ def handleAlerts(tree, tenant):
         for child in node:
 
             childName = child.tag
+
+            if (childName == "Analyzer"):
+                id = child.attrib.get('id')
+                peerType = getPeerType(id)
+
 
             if (childName == "Source"):
                 source = child.text.replace('"', '')
