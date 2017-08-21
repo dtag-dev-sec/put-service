@@ -46,7 +46,7 @@ Some auth code by Andre Vorbach
 
 Overall help, friendly extensions / comments / suggestions by Markus Schroer
 
-Valuable discussions with Marco Ochse and Rainer Schmidt
+Valuable discussions with Andre Vorbach, Aydin Kocas, Markus Schroer, Marco Ochse and Rainer Schmidt
 
 **Used frameworks / tools:**
 
