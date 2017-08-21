@@ -4,13 +4,15 @@ import elastic, auth, sys, getopt, config
 from bottle import request, response, install, run, post, get, HTTPResponse
 from datetime import datetime
 
+# local variable init defaults
 localServer, esindex, localPort, elasticHost, mongohost, mongoport = "127.0.0.1", "ews", "8080", "127.0.0.1", "127.0.0.1", "27017"
 debug = False
 
 createIndex = False
 useConfigFile = True
 
-peerIdents = ["honeytrap", "Network", "kippo", "SSH/console", "glastopf", "Webpage", ".gt3", "Webpage", ".dio", "Network", ".kip", "SSH/console", "", ""]
+peerIdents = ["WebHoneypot", "Webpage", "Dionaea", "Network(Dionaea)", "honeytrap", "Network(honeytrap)", "kippo", "SSH/console(cowrie)",
+              "glastopf", "Webpage", ".gt3", "Webpage",".dio", "Network", ".kip", "SSH/console", "", ""]
 
 
 #
@@ -32,7 +34,7 @@ install(logger)
 
 
 #
-#
+# parse through the data tables
 #
 def getPeerType(id):
     for i in range (0,len(peerIdents) - 2, 2):
@@ -56,7 +58,7 @@ def handleAlerts(tree, tenant):
 
         # now parse the node
 
-        source, sourcePort, destination, destinationPort, createTime, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime =  "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+        source, sourcePort, destination, destinationPort, createTime, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime =  "", "", "", "", "", "-", "", "", "", "", "", "", "", ""
 
         for child in node:
 
@@ -85,12 +87,10 @@ def handleAlerts(tree, tenant):
                 if (type == "url"):
                     url = child.text
 
-                if (type == "description"):
-                    if (peerType == ""):
-                        peerType = child.text
-
-                    if ("WebHoneypot" in peerType):
-                        peerType = "Webpage";
+                # if peertype could not be identified by the identifier of the honeypot, try to use the
+                # description field
+                if (type == "description" and peerType == ""):
+                        peerType = getPeerType(child.text)
 
             if (childName == "AdditionalData"):
                 meaning = child.attrib.get('meaning')
@@ -116,6 +116,7 @@ def handleAlerts(tree, tenant):
 
             if (childName == "Analyzer"):
                 analyzerID = child.attrib.get('id')
+
 
         correction = elastic.putAlarm(elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort)
         counter = counter + 1 - correction
