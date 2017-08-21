@@ -7,7 +7,7 @@ import hashlib
 from elasticsearch import Elasticsearch
 
 
-countries = ["RU", "Russia", "CN", "China", "DE", "Germany", "JP", "Japan" , "NL" , "Netherlands", "CA", "Canada", "GB", "United Kingdom", "CN", "China", "US", "USA",
+countries = ["VN", "Vietnam", "JP", "Japan", "AR", "Argentinia", "NO", "Norway","RU", "Russia", "CN", "China", "DE", "Germany", "JP", "Japan" , "NL" , "Netherlands", "CA", "Canada", "GB", "United Kingdom", "CN", "China", "US", "USA",
              "", ""]
 
 #
