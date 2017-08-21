@@ -33,6 +33,8 @@ def getGeoIP(sourceip, destinationip):
     try:
         lat = giCity.record_by_addr(sourceip)['latitude']
         long = giCity.record_by_addr(sourceip)['longitude']
+        latDest = giCity.record_by_addr(destinationip)['latitude']
+        longDest = giCity.record_by_addr(destinationip)['longitude']
         country = gi.country_code_by_addr(sourceip)
         countryName = getCountries(country)
         asn = giASN.org_by_addr(sourceip)
@@ -40,12 +42,12 @@ def getGeoIP(sourceip, destinationip):
         countryTarget = gi.country_code_by_addr(destinationip)
         countryTargetName = getCountries(countryTarget)
 
-        return (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName)
+        return (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName, latDest, longDest)
 
     except:
 
         print ("Failure at creating GeoIP information")
-        return ("", "", "", "", "", "")
+        return ("", "", "", "", "", "", "", "")
 
 
 
@@ -90,7 +92,7 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
         m = hashlib.md5()
         m.update((createTime + sourceip + destinationip).encode())
 
-        (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName) = getGeoIP(sourceip,destinationip)
+        (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName, latDest, longDest) = getGeoIP(sourceip,destinationip)
 
         alert = {
                 "country": country,
@@ -104,6 +106,7 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
                 "peerType": peerType,
                 "client": "-",
                 "location": str(lat) + " , " + str(long),
+                "locationDestination": str(latDest) + " , " + str(longDest),
                 "sourceEntryIp": sourceip,
                 "sourceEntryPort": sourcePort,
                 "additionalData": "",
@@ -111,7 +114,7 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
                 "targetEntryPort": destinationPort,
                 "targetCountry": countryTarget,
                 "targetCountryName": countryTargetName,
-                "targegEntryAS": asnTarget,
+                "targetEntryAS": asnTarget,
                 "username": username,                               # for ssh sessions
                 "password": password,                               # for ssh sessions
                 "login": loginStatus,                               # for SSH sessions
@@ -119,7 +122,6 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
                 "clientVersion": version,
                 "sessionStart": startTime,
                 "sessionEnd": endTime,
-
 
             }
 
