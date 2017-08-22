@@ -7,7 +7,7 @@ import hashlib
 from elasticsearch import Elasticsearch
 
 
-countries = ["VN", "Vietnam", "JP", "Japan", "AR", "Argentinia", "NO", "Norway","RU", "Russia", "CN", "China", "DE", "Germany", "JP", "Japan" , "NL" , "Netherlands", "CA", "Canada", "GB", "United Kingdom", "CN", "China", "US", "USA",
+countries = ["TW", "Taiwan", "VN", "Vietnam", "JP", "Japan", "AR", "Argentinia", "NO", "Norway","RU", "Russia", "CN", "China", "DE", "Germany", "JP", "Japan" , "NL" , "Netherlands", "CA", "Canada", "GB", "United Kingdom", "CN", "China", "US", "USA",
              "", ""]
 
 #
@@ -78,14 +78,42 @@ def initIndex(host, index):
                         "type": "boolean"
                     },
                 }
+            },
+            "Pattern": {
+                "properties": {
+                    "firstSeen": {
+                        "type": "date",
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+                    },
+                    "lastSeen": {
+                        "type": "date",
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+                    },
+
+                }
+            },
+            "VulnID": {
+                "properties": {
+                    "firstSeen": {
+                        "type": "date",
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+                    },
+                    "lastSeen": {
+                        "type": "date",
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+                    },
+
+                }
             }
+
         }
     }
     # create index
     es.indices.create(index=index, ignore=400, body=settings)
 
 
-def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, startTime, endTime, sourcePort, destinationPort):
+
+def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, startTime, endTime, sourcePort, destinationPort):
 
     try:
 
@@ -97,7 +125,7 @@ def putAlarm(host, index, sourceip, destinationip, createTime, tenant, url, anal
         alert = {
                 "country": country,
                 "countryName": countryName,
-                "vulnid": "-",
+                "vulnid": vulnid,
                 "originalRequestString": url,
                 "sourceEntryAS": asn,
                 "createTime": createTime,

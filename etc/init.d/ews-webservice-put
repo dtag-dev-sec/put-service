@@ -1,53 +1,58 @@
 #!/bin/sh
 #
-# /etc/init.d/tomcat8 -- startup script for the Tomcat 6 servlet engine
-#
-# Written by Miquel van Smoorenburg <miquels@cistron.nl>.
-# Modified for Debian GNU/Linux by Ian Murdock <imurdock@gnu.ai.mit.edu>.
-# Modified for Tomcat by Stefan Gybas <sgybas@debian.org>.
-# Modified for Tomcat6 by Thierry Carrez <thierry.carrez@ubuntu.com>.
-# Modified for Tomcat7 by Ernesto Hernandez-Novich <emhn@itverx.com.ve>.
-# Additional improvements by Jason Brittain <jason.brittain@mulesoft.com>.
-#
 ### BEGIN INIT INFO
-# Provides:          tomcat8-ews-webservice-put
-# Required-Start:    $local_fs $remote_fs $network
-# Required-Stop:     $local_fs $remote_fs $network
-# Should-Start:      $named
-# Should-Stop:       $named
+# Provides:          peba
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs $network
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start Tomcat.
-# Description:       Start the Tomcat servlet engine.
+# Short-Description: Start EWS put service backend
+# Description:       Start Python EWS Backend.
 ### END INIT INFO
-
-set -e
-
-PATH=/bin:/usr/bin:/sbin:/usr/sbin
-NAME=ews-webservice-put
 
 if [ `id -u` -ne 0 ]; then
         echo "You need root privileges to run this script"
         exit 1
 fi
 
+APPNAME=put-service
+USER=root
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin
+APPPATH=/opt/put-service/
+DAEMON=/opt/peba/bin/gunicorn
+PIDFILE=/var/run/gunicorn.pid
+LOGFILE=/var/log/$APPNAME.log
+WORKERS=4
+BINDHOST=$(cat /etc/ews/peba.cfg|grep BINDHOST|cut -d "\"" -f2)
+
 
 . /lib/lsb/init-functions
 
-if [ -r /etc/default/rcS ]; then
-        . /etc/default/rcS
-fi
 
 
 case "$1" in
   start)
-        log_daemon_msg "Starting GET handler"
-        cd /opt/PEBA/ews-webservice-put
-	nohup python3 worker.py -p 9933 -b 192.168.1.64 -s 192.168.1.64 -i ews-2017.1 >/dev/null 2>&1 &
-        ;;
+        log_daemon_msg "Starting deferred execution scheduler" "$APPNAME"
+        cd $APPPATH
+        python3 worker.py
+        log_end_msg $?
+    ;;
   stop)
-        log_daemon_msg "Stopping GET handler"
-        ;;
+        log_daemon_msg "Stopping deferred execution scheduler" "$APPNAME"
+        killproc -p $PIDFILE $DAEMON
+        log_end_msg $?
+    ;;
+  force-reload|restart)
+    $0 stop
+    $0 start
+    ;;
+  status)
+    status_of_proc -p $PIDFILE $DAEMON && exit 0 || exit $?
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$APPNAME {start|stop|restart|force-reload|status}"
+    exit 1
+    ;;
 esac
 
 exit 0

@@ -58,7 +58,7 @@ def handleAlerts(tree, tenant):
 
         # now parse the node
 
-        source, sourcePort, destination, destinationPort, createTime, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime =  "", "", "", "", "", "-", "", "", "", "", "", "", "", ""
+        vulnid, sourcePort, destination, destinationPort, createTime, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime = "", "", "", "", "", "-", "", "", "", "", "", "", "", ""
 
         for child in node:
 
@@ -111,14 +111,17 @@ def handleAlerts(tree, tenant):
                     starttime = child.text
 
                 if (meaning == "endtime"):
-                        endtime = child.text
+                    endtime = child.text
+
+                if (meaning == "cve_id"):
+                    vulnid = child.text
 
 
             if (childName == "Analyzer"):
                 analyzerID = child.attrib.get('id')
 
 
-        correction = elastic.putAlarm(elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort)
+        correction = elastic.putAlarm(vulnid, elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort)
         counter = counter + 1 - correction
 
 

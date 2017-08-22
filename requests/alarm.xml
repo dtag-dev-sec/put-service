@@ -17,6 +17,7 @@
         <AdditionalData meaning="starttime" type="string">2017-08-01%2003%3A30%3A28</AdditionalData>
         <AdditionalData meaning="login" type="string">Success</AdditionalData>
         <AdditionalData meaning="endtime" type="string">2017-08-01%2005%3A32%3A19</AdditionalData>
+        <AdditionalData meaning="cve_id" type="string">CVE-2012-5959%20CVE-2012-5958</AdditionalData>
     </Alert>
 
     <Alert>
@@ -55,7 +56,7 @@
     </Alert>
     <Alert>
         <Analyzer id="MSTest3"/>
-        <CreateTime tz="+0200">2017-03-11 09:10:21</CreateTime>
+        <CreateTime tz="+0200">2017-03-11 11:10:21</CreateTime>
         <Source category="ipv4" port="" protocol="tcp">193.99.144.95</Source>
         <Target category="ipv4" port="80" protocol="tcp">46.29.100.76</Target>
         <Request type="url">/cgi-bin/.br/style.css2/2</Request>
