@@ -1,4 +1,6 @@
-import xml.etree.ElementTree as xmlParser
+#import xml.etree.ElementTree as xmlParser
+import defusedxml.ElementTree as xmlParser
+
 from xml.etree.ElementTree import tostring
 import pygeoip
 from geoip import geolite2
@@ -78,32 +80,6 @@ def initIndex(host, index):
                         "type": "boolean"
                     },
                 }
-            },
-            "Pattern": {
-                "properties": {
-                    "firstSeen": {
-                        "type": "date",
-                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
-                    },
-                    "lastSeen": {
-                        "type": "date",
-                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
-                    },
-
-                }
-            },
-            "VulnID": {
-                "properties": {
-                    "firstSeen": {
-                        "type": "date",
-                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
-                    },
-                    "lastSeen": {
-                        "type": "date",
-                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
-                    },
-
-                }
             }
 
         }
@@ -118,7 +94,7 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
     try:
 
         m = hashlib.md5()
-        m.update((createTime + sourceip + destinationip).encode())
+        m.update((createTime + sourceip + destinationip + url + analyzerID).encode())
 
         (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName, latDest, longDest) = getGeoIP(sourceip,destinationip)
 
