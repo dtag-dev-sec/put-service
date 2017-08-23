@@ -4,3 +4,5 @@ pygeoip
 python-geoip
 pymongo
 gunicorn
+slackclient
+defusedxml

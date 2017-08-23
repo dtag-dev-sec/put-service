@@ -1,5 +1,6 @@
 
-import xml.etree.ElementTree as xmlParser
+#import xml.etree.ElementTree as xmlParser
+import defusedxml.ElementTree as xmlParser
 import elastic, auth, sys, getopt, config
 from bottle import request, response, install, run, post, get, HTTPResponse
 from datetime import datetime
@@ -48,6 +49,16 @@ def getPeerType(id):
 
 
 #
+# fixes the URL (original request string)
+#
+def fixUrl(destinationPort, url, peerType):
+
+    if ("honeytrap" in peerType):
+        return "Attack on port " + str(destinationPort)
+
+    return url
+
+#
 #
 #
 def handleAlerts(tree, tenant):
@@ -58,7 +69,7 @@ def handleAlerts(tree, tenant):
 
         # now parse the node
 
-        vulnid, sourcePort, destination, destinationPort, createTime, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime = "", "", "", "", "", "-", "", "", "", "", "", "", "", ""
+        peerType, vulnid, sourcePort, destination, destinationPort, createTime, url, analyzerID, username, password, loginStatus, version, starttime, endtime = "Unclassified", "", "", "", "", "-", "", "", "", "", "", "", "", ""
 
         for child in node:
 
@@ -116,10 +127,11 @@ def handleAlerts(tree, tenant):
                 if (meaning == "cve_id"):
                     vulnid = child.text
 
-
             if (childName == "Analyzer"):
                 analyzerID = child.attrib.get('id')
 
+
+        url = fixUrl(destinationPort, url, peerType)
 
         correction = elastic.putAlarm(vulnid, elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort)
         counter = counter + 1 - correction
@@ -175,6 +187,10 @@ def postSimpleMessage():
     response['status'] = "Success"
     raise HTTPResponse(message, status=200, headers=headers)
 
+
+#
+# main program code
+#
 
 (elasticHost, esindex, localServer, localPort, mongoport, mongohost,  createIndex, useConfigFile, debug) = config.readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug)
 
