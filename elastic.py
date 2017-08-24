@@ -88,46 +88,51 @@ def initIndex(host, index):
 
 
 
-def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, startTime, endTime, sourcePort, destinationPort):
+def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, startTime, endTime, sourcePort, destinationPort,debug):
+
+    m = hashlib.md5()
+    m.update((createTime + sourceip + destinationip + url + analyzerID).encode())
+
+    (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName, latDest, longDest) = getGeoIP(
+        sourceip, destinationip)
+
+    alert = {
+        "country": country,
+        "countryName": countryName,
+        "vulnid": vulnid,
+        "originalRequestString": url,
+        "sourceEntryAS": asn,
+        "createTime": createTime,
+        "clientDomain": tenant,
+        "peerIdent": analyzerID,
+        "peerType": peerType,
+        "client": "-",
+        "location": str(lat) + " , " + str(long),
+        "locationDestination": str(latDest) + " , " + str(longDest),
+        "sourceEntryIp": sourceip,
+        "sourceEntryPort": sourcePort,
+        "additionalData": "",
+        "targetEntryIp": destinationip,
+        "targetEntryPort": destinationPort,
+        "targetCountry": countryTarget,
+        "targetCountryName": countryTargetName,
+        "targetEntryAS": asnTarget,
+        "username": username,  # for ssh sessions
+        "password": password,  # for ssh sessions
+        "login": loginStatus,  # for SSH sessions
+        "targetport": "",
+        "clientVersion": version,
+        "sessionStart": startTime,
+        "sessionEnd": endTime,
+
+    }
+
+    if debug:
+        print("Not sending out alert: " + str(alert))
+        return 0
+
 
     try:
-
-        m = hashlib.md5()
-        m.update((createTime + sourceip + destinationip + url + analyzerID).encode())
-
-        (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName, latDest, longDest) = getGeoIP(sourceip,destinationip)
-
-        alert = {
-                "country": country,
-                "countryName": countryName,
-                "vulnid": vulnid,
-                "originalRequestString": url,
-                "sourceEntryAS": asn,
-                "createTime": createTime,
-                "clientDomain": tenant,
-                "peerIdent": analyzerID,
-                "peerType": peerType,
-                "client": "-",
-                "location": str(lat) + " , " + str(long),
-                "locationDestination": str(latDest) + " , " + str(longDest),
-                "sourceEntryIp": sourceip,
-                "sourceEntryPort": sourcePort,
-                "additionalData": "",
-                "targetEntryIp": destinationip,
-                "targetEntryPort": destinationPort,
-                "targetCountry": countryTarget,
-                "targetCountryName": countryTargetName,
-                "targetEntryAS": asnTarget,
-                "username": username,                               # for ssh sessions
-                "password": password,                               # for ssh sessions
-                "login": loginStatus,                               # for SSH sessions
-                "targetport": "",
-                "clientVersion": version,
-                "sessionStart": startTime,
-                "sessionEnd": endTime,
-
-            }
-
         es = Elasticsearch(host)
         res = es.index(index=index, doc_type='Alert', id=m.hexdigest(), body=alert)
         return 0

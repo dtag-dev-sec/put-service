@@ -132,7 +132,7 @@ def handleAlerts(tree, tenant):
 
         url = fixUrl(destinationPort, url, peerType)
 
-        correction = elastic.putAlarm(vulnid, elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort)
+        correction = elastic.putAlarm(vulnid, elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort, debug)
         counter = counter + 1 - correction
 
 
@@ -202,6 +202,8 @@ else:
     if (useConfigFile):
         print ("Info: Using configfile")
         (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex,debug) = config.readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost, debug)
+    if debug:
+        print("Info: Running in debug mode")
 
     #
     # start server depending on parameters given from shell or config file
