@@ -1,6 +1,7 @@
 
 from pymongo import MongoClient, errors
 import hashlib
+import ipaddress
 
 #
 # default credentials for community
@@ -48,7 +49,7 @@ def handleCommunityAuth(usernameFromRequest, passwordFromRequest):
     return (username == usernameFromRequest) and (password == passwordFromRequest)
 
 def checkPrivateIP(ip):
-    return 0
+    return ipaddress.ip_address(ip).is_private
 
 
 # Authenticate user in mongodb
