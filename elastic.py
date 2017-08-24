@@ -79,6 +79,22 @@ def initIndex(host, index):
                         "type": "boolean"
                     },
                 }
+            },
+            "Vuln": {
+                "properties": {
+                    "firstSeen": {
+                        "type": "date",
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+                    },
+                    "lastSeen": {
+                        "type": "date",
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+                    },
+                    "firstIp": {
+                        "type": "ip"
+                    },
+
+                }
             }
 
         }
