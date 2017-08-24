@@ -47,8 +47,8 @@ def getGeoIP(sourceip, destinationip):
 
     except:
 
-        print ("Failure at creating GeoIP information")
-        return ("", "", "", "", "", "", "", "")
+        print ("Failure at creating GeoIP information:: Returning dummy information to keep sicherheitstacho UI happy")
+        return ("0.0", "0.0", "-", "-", "-", "-", "-", "-", "0.0", "0.0")
 
 
 
