@@ -1,5 +1,4 @@
 
-#import xml.etree.ElementTree as xmlParser
 import defusedxml.ElementTree as xmlParser
 import elastic, auth, sys, getopt, config
 from bottle import request, response, install, run, post, get, HTTPResponse

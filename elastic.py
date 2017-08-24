@@ -1,4 +1,3 @@
-#import xml.etree.ElementTree as xmlParser
 import defusedxml.ElementTree as xmlParser
 
 from xml.etree.ElementTree import tostring
