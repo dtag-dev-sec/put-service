@@ -45,7 +45,7 @@ def getPeerType(id):
          if (honeypot in id):
              return peerType
 
-    return ""
+    return "Unclassified"
 
 
 #
