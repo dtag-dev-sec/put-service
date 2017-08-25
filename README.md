@@ -42,11 +42,11 @@ Install Maxmind GeoIP libraries at /var/lib/
 
 **Credits**
 
-Some auth code by Andre Vorbach
+Code by Andre Vorbach and Markus Schmall
 
 Overall help, friendly extensions / comments / suggestions by Markus Schroer
 
-Valuable discussions with Andre Vorbach, Aydin Kocas, Markus Schroer, Marco Ochse and Rainer Schmidt
+Valuable discussions with Aydin Kocas, Markus Schroer, Marco Ochse and Rainer Schmidt
 
 **Used frameworks / tools:**
 
