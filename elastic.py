@@ -1,7 +1,7 @@
 import defusedxml.ElementTree as xmlParser
 
 from xml.etree.ElementTree import tostring
-import pygeoip, urllib, html
+import pygeoip, urllib
 from geoip import geolite2
 import hashlib
 
@@ -152,7 +152,7 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
         "country": country,
         "countryName": countryName,
         "vulnid": urllib.parse.unquote(vulnid),
-        "originalRequestString": html.escape(urllib.parse.unquote(url)),
+        "originalRequestString": '%s' % url,
         "sourceEntryAS": asn,
         "createTime": createTime,
         "clientDomain": tenant,

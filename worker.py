@@ -1,6 +1,6 @@
 
 import defusedxml.ElementTree as xmlParser
-import elastic, auth, sys, getopt, config, communication
+import elastic, auth, sys, getopt, config, communication, urllib
 from bottle import request, response, install, run, post, get, HTTPResponse
 from datetime import datetime
 
@@ -95,7 +95,7 @@ def handleAlerts(tree, tenant):
                 type = child.attrib.get('type')
 
                 if (type == "url"):
-                    url = child.text
+                    url = urllib.parse.unquote(child.text)
 
                 # if peertype could not be identified by the identifier of the honeypot, try to use the
                 # description field
@@ -118,16 +118,24 @@ def handleAlerts(tree, tenant):
                     version = child.text
 
                 if (meaning == "starttime"):
-                    starttime = child.text
+                    if (child.text) is not None:
+                        starttime = urllib.parse.unquote(child.text)
 
                 if (meaning == "endtime"):
-                    endtime = child.text
+                    if (child.text) is not None:
+                        endtime = urllib.parse.unquote(child.text)
 
                 if (meaning == "cve_id"):
                     vulnid = child.text
 
+                if (meaning == "input"):
+                    if (child.text) is not None:
+                        url = urllib.parse.unquote(child.text).replace('\n','; ')[2:]
+
+
             if (childName == "Analyzer"):
                 analyzerID = child.attrib.get('id')
+
 
 
         url = fixUrl(destinationPort, url, peerType)
