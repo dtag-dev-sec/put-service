@@ -51,8 +51,9 @@ def getGeoIP(sourceip, destinationip):
         print ("Failure at creating GeoIP information:: Returning dummy information to keep sicherheitstacho UI happy")
         return ("0.0", "0.0", "-", "-", "-", "-", "-", "-", "0.0", "0.0")
 
-
-
+#
+# init index and mappings
+#
 def initIndex(host, index):
 
     es = Elasticsearch([{'host': host, 'port': "9200"}])
@@ -81,7 +82,7 @@ def initIndex(host, index):
                     },
                 }
             },
-            "Vuln": {
+            "CVE": {
                 "properties": {
                     "firstSeen": {
                         "type": "date",
@@ -94,6 +95,9 @@ def initIndex(host, index):
                     "firstIp": {
                         "type": "ip"
                     },
+                    "number": {
+                        "type": "text"
+                    }
 
                 }
             }
@@ -104,7 +108,38 @@ def initIndex(host, index):
     es.indices.create(index=index, ignore=400, body=settings)
 
 
+#
+# store alerts, which include a vulnerability id
+#
+def putVuln(vulnid, elasticHost, esindex, createTime, ip, debug):
 
+    m = hashlib.md5()
+    m.update((createTime + vulnid).encode())
+
+    vuln = {
+        "firstSeen" : createTime,
+        "lastSeen": createTime,
+        "firstIp": ip,
+        "number": vulnid
+
+    }
+
+    if debug:
+        print("Not sending out vulnerability: " + str(vulnid))
+        return 0
+
+    try:
+        es = Elasticsearch(elasticHost)
+        res = es.index(index=esindex, doc_type='CVE', id=m.hexdigest(), body=vuln)
+        return 0
+
+    except:
+        print ("Error when persisting")
+        return 1
+
+#
+# stores an alarm in the index
+#
 def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, startTime, endTime, sourcePort, destinationPort,debug):
 
     m = hashlib.md5()
@@ -141,13 +176,11 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
         "clientVersion": version,
         "sessionStart": startTime,
         "sessionEnd": endTime,
-
     }
 
     if debug:
         print("Not sending out alert: " + str(alert))
         return 0
-
 
     try:
         es = Elasticsearch(host)
@@ -155,7 +188,6 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
         return 0
 
     except:
-
         print ("Error when persisting")
         return 1
 

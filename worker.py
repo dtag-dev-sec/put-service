@@ -132,6 +132,15 @@ def handleAlerts(tree, tenant):
 
         url = fixUrl(destinationPort, url, peerType)
 
+        #
+        # persist CVE
+        #
+        if (len(str(vulnid)) > 2):
+            elastic.putVuln(vulnid, elasticHost, esindex, createTime, source, debug)
+
+        #
+        # store attack itself
+        #
         correction = elastic.putAlarm(vulnid, elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort, debug)
         counter = counter + 1 - correction
 
