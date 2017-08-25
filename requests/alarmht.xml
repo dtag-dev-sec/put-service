@@ -6,7 +6,7 @@
 
       <Alert>
         <Analyzer id="honeytrap"/>
-        <CreateTime tz="+0200">2014-03-11 09:12:22</CreateTime>
+        <CreateTime tz="+0200">2013-03-11 19:12:22</CreateTime>
         <Source category="ipv4" port="200" protocol="tcp">46.29.100.76</Source>
         <Target category="ipv4" port="80" protocol="tcp">46.29.100.76</Target>
         <Request type="url">/cgi-bin/.br/style.css3/444</Request>
@@ -20,6 +20,7 @@
         <Request type="description">honeytrap</Request>
         <AdditionalData meaning="host" type="string">www.webe.de</AdditionalData>
         <AdditionalData meaning="sqliteid" type="integer">3688</AdditionalData>
+          <AdditionalData meaning="cve_id">CVE-2017-999</AdditionalData>
     </Alert>
 
 
