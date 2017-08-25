@@ -3,7 +3,7 @@ import sys, getopt
 
 
 
-def readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost,debug):
+def readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost,debug, slacktoken, slackuse):
     config = ConfigParser()
 
     candidates = ['/etc/ews/ewsput.cfg']
@@ -19,13 +19,16 @@ def readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohos
     mongohost = config.get('mongo', 'ip')
     mongoport = config.get('mongo', 'port')
 
+    slacktoken = config.get('slack', "token")
+    slackuse = config.get('slack', "use")
+
     debugCmd = config.get('general', 'debug')
     if (debugCmd == "1"):
         debug = True
     else:
         debug = False
 
-    return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, False, debug)
+    return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, False, debug, slacktoken, slackuse)
 
 
 def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug):

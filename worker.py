@@ -1,11 +1,11 @@
 
 import defusedxml.ElementTree as xmlParser
-import elastic, auth, sys, getopt, config
+import elastic, auth, sys, getopt, config, communication
 from bottle import request, response, install, run, post, get, HTTPResponse
 from datetime import datetime
 
 # local variable init defaults
-localServer, esindex, localPort, elasticHost, mongohost, mongoport = "127.0.0.1", "ews", "8080", "127.0.0.1", "127.0.0.1", "27017"
+localServer, esindex, localPort, elasticHost, mongohost, mongoport, slackuse, slacktoken = "127.0.0.1", "ews", "8080", "127.0.0.1", "127.0.0.1", "27017", "no", ""
 debug = False
 
 createIndex = False
@@ -58,7 +58,7 @@ def fixUrl(destinationPort, url, peerType):
     return url
 
 #
-#
+# handle the Alerts itself
 #
 def handleAlerts(tree, tenant):
 
@@ -144,6 +144,13 @@ def handleAlerts(tree, tenant):
         correction = elastic.putAlarm(vulnid, elasticHost, esindex, source, destination, createTime, tenant, url, analyzerID, peerType, username, password, loginStatus, version, starttime, endtime, sourcePort, destinationPort, debug)
         counter = counter + 1 - correction
 
+        #
+        # slack wanted
+        #
+        if ("yes" in slackuse):
+            if len(str(slacktoken)) > 10:
+                if len(str(vulnid)) > 4:
+                    communication.sendSlack("cve", slacktoken, "CVE (" + vulnid + ") found.")
 
     print ("Info: Added " + str(counter) + " entries")
     return True
@@ -210,7 +217,7 @@ else:
 
     if (useConfigFile):
         print ("Info: Using configfile")
-        (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex,debug) = config.readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost, debug)
+        (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex,debug, slacktoken, slackuse) = config.readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost, debug, slacktoken, slackuse)
     if debug:
         print("Info: Running in debug mode")
 
