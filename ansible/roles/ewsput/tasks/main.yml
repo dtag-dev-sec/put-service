@@ -23,6 +23,8 @@
     - { src: './../../../../auth.py', dest: '/opt/put-service/auth.py' }
     - { src: './../../../../config.py', dest: '/opt/put-service/config.py' }
     - { src: './../../../../elastic.py', dest: '/opt/put-service/elastic.py' }
+    - { src: './../../../../communication.py', dest: '/opt/put-service/communication.py' }
+
 
 - name: Get software for downloading.
   apt: name={{ item }} state=present
