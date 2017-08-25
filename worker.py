@@ -158,7 +158,8 @@ def handleAlerts(tree, tenant):
         if ("yes" in slackuse):
             if len(str(slacktoken)) > 10:
                 if len(str(vulnid)) > 4:
-                    communication.sendSlack("cve", slacktoken, "CVE (" + vulnid + ") found.")
+                    if (elastic.cveExisting(vulnid, elasticHost, esindex)):
+                        communication.sendSlack("cve", slacktoken, "CVE (" + vulnid + ") found.")
 
     print ("Info: Added " + str(counter) + " entries")
     return True
