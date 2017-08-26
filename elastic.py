@@ -199,13 +199,16 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
 def cveExisting(cve, host, index):
     es = Elasticsearch(host)
 
-    res = es.search(index=index, doc_type="CVE", body={"query": {"match_all": {}}})
+    query = '{"query":{"bool":{"must":[{"query_string":{"default_field":"number","query":"' + cve + '"}}],"must_not":[],"should":[]}},"from":0,"size":10,"sort":[],"aggs":{}}'
+    #queryAll = '{"query": {"match_all": {}}}'
+
+    res = es.search(index=index, doc_type="CVE", body=query)
 
     for hit in res['hits']['hits']:
 
-        cveFound = "%(number)s " % hit["_source"]
-        if (cve in cveFound):
-            return True
+        #cveFound = "%(number)s " % hit["_source"]
+        #if (cve in cveFound):
+        return True
 
     return False
 
@@ -244,5 +247,3 @@ def queryAlerts(server, index, maxAlerts):
     return returnData
 
 
-
-cveExisting("CVE-2017-999", "127.0.0.1", "ews2017.1")
