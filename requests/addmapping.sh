@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+#
+# adds mapping, which have been not existing in the first versions
+#
+
 curl -XPUT 'localhost:9200/ews2017.1/_mapping/CVE?pretty' -H 'Content-Type: application/json' -d'
 {
   "properties": {
