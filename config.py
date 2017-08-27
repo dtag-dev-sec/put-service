@@ -36,13 +36,13 @@ def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mon
     #
     # Read command line args
     #
-    myopts, args = getopt.getopt(sys.argv[1:], "b:s:i:p:h:l:cd")
+    myopts, args = getopt.getopt(sys.argv[1:], "b:e:i:p:h:l:cd")
     debugCmd = "0"
 
     for o, a in myopts:
         useConfigFile = False
 
-        if o == '-s':
+        if o == '-e':
             elasticHost = a
         elif o == '-i':
             esindex = a

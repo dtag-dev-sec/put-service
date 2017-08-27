@@ -2,10 +2,11 @@
 
 
 
+
 **Preconditions**
 
 Python3
-Install Elasticsearch 5.4 ++
+Install Elasticsearch 5.5 ++
 Install MongoDB 3.xx ++
 
 **Install**
@@ -21,7 +22,7 @@ Install Maxmind GeoIP libraries at /var/lib/
 
 **Example command line**
 
-    python3 worker.py -p 9933 -b 192.168.1.64 -s 192.168.1.64 -i ews-2017.1
+    python3 worker.py -p 9933 -b 192.168.1.64 -e 192.168.1.64 -i ews-2017.1
 
 
 **Command line option**
@@ -30,7 +31,7 @@ Install Maxmind GeoIP libraries at /var/lib/
 
 -b local ip / interface to listen on
 
--s ip of elasticsearch
+-e ip of elasticsearch
 
 -i index to be used on elasticsearch server
 
@@ -53,3 +54,5 @@ Valuable discussions with Aydin Kocas, Markus Schroer, Marco Ochse and Rainer Sc
 Maxmind GeoIP (https://dev.maxmind.com/geoip/legacy/geolite/)
 Gunicorn
 Bottle
+Elasticsearch
+Mongo
