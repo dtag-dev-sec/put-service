@@ -151,10 +151,8 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
     (lat, long, country, asn, asnTarget, countryTarget, countryName, countryTargetName, latDest, longDest) = getGeoIP(
         sourceip, destinationip)
 
-    time = datetime.datetime.now()
-    currentTime = str(time.year) + "-" + str(time.month) + "-" + str(time.day) + " " + str(time.hour)+":"+str(time.minute)+":"+str(time.second)
+    currentTime = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
-    neu = str(time.year) + str(time.strftime("-%m-%d %H:%M:%S"))
 
     alert = {
         "country": country,
@@ -184,7 +182,7 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
         "clientVersion": version,
         "sessionStart": startTime,
         "sessionEnd": endTime,
-        "recievedTime": neu
+        "recievedTime": currentTime
     }
 
     if debug:
