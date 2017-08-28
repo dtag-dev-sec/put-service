@@ -154,6 +154,8 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
     time = datetime.datetime.now()
     currentTime = str(time.year) + "-" + str(time.month) + "-" + str(time.day) + " " + str(time.hour)+":"+str(time.minute)+":"+str(time.second)
 
+    neu = str(time.year) + str(time.strftime("-%m-%d %H:%M:%S"))
+
     alert = {
         "country": country,
         "countryName": countryName,
@@ -182,7 +184,7 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
         "clientVersion": version,
         "sessionStart": startTime,
         "sessionEnd": endTime,
-        "recievedTime": currentTime
+        "recievedTime": neu
     }
 
     if debug:
