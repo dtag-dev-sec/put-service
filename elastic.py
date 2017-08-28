@@ -159,7 +159,7 @@ def putAlarm(vulnid, host, index, sourceip, destinationip, createTime, tenant, u
     alert = {
         "country": country,
         "countryName": countryName,
-        "vulnid": urllib.parse.unquote(vulnid),
+        "vulnid": '%s' % vulnid,
         "originalRequestString": '%s' % url,
         "sourceEntryAS": asn,
         "createTime": createTime,

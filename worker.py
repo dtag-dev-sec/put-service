@@ -126,7 +126,7 @@ def handleAlerts(tree, tenant):
                         endtime = urllib.parse.unquote(child.text)
 
                 if (meaning == "cve_id"):
-                    vulnid = child.text
+                    vulnid = urllib.parse.unquote(child.text)
 
                 if (meaning == "input"):
                     if (child.text) is not None:
