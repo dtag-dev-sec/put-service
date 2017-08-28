@@ -29,7 +29,7 @@ curl -XPUT 'localhost:9200/ews2017.1/_mapping/Alert?pretty' -H 'Content-Type: ap
 {
   "properties": {
 
-                    
+
                     "createTime": {
                         "type": "date",
                         "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
