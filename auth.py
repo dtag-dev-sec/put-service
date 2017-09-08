@@ -61,7 +61,7 @@ def authenticate(username, token, mongohost, mongoport):
         if dbresult == None:
             return False
         else:
-            tokenhash = hashlib.sha512(token)
+            tokenhash = hashlib.sha512(token.encode('utf-8'))
             if dbresult['token'] == tokenhash.hexdigest():
                     return True
             else:
