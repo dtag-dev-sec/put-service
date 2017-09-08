@@ -6,10 +6,8 @@ from datetime import datetime
 
 # local variable init defaults
 localServer, esindex, localPort, elasticHost, mongohost, mongoport, slackuse, slacktoken = "127.0.0.1", "ews", "8080", "127.0.0.1", "127.0.0.1", "27017", "no", ""
-debug = False
+debug, testSettings, createIndex, useConfigFile = False, False, False, False
 
-createIndex = False
-useConfigFile = True
 
 peerIdents = ["WebHoneypot", "Webpage", "Dionaea", "Network(Dionaea)", "honeytrap", "Network(honeytrap)", "kippo", "SSH/console(cowrie)", "cowrie", "SSH/console(cowrie)",
               "glastopf", "Webpage", ".gt3", "Webpage",".dio", "Network", ".kip", "SSH/console", "", ""]
@@ -218,7 +216,7 @@ def postSimpleMessage():
 # main program code
 #
 
-(elasticHost, esindex, localServer, localPort, mongoport, mongohost,  createIndex, useConfigFile, debug) = config.readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug)
+(elasticHost, esindex, localServer, localPort, mongoport, mongohost,  createIndex, useConfigFile, debug, testSettings) = config.readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug, testSettings)
 
 if (createIndex):
     print ("Info: Just creating an index " + esindex)
