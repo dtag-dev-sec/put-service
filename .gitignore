@@ -98,3 +98,11 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+.idea/ews-webservice-get.iml
+
+.idea/ews-webservice-get.iml
+
+.idea/misc.xml
+
+.idea/workspace.xml
