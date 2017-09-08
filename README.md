@@ -22,7 +22,7 @@ Install Maxmind GeoIP libraries at /var/lib/
 
 **Example command line**
 
-    python3 worker.py -p 9933 -b 192.168.1.64 -e 192.168.1.64 -i ews-2017.1
+    python3 worker.py -p 9933 -b 192.168.1.64 -u 192.168.1.64 -i ews-2017.1
 
 
 **Command line option**
@@ -31,7 +31,7 @@ Install Maxmind GeoIP libraries at /var/lib/
 
 -b local ip / interface to listen on
 
--e ip of elasticsearch
+-u ip of elasticsearch
 
 -i index to be used on elasticsearch server
 
@@ -40,6 +40,9 @@ Install Maxmind GeoIP libraries at /var/lib/
 -l mongoport
 
 -c just create the index
+
+-t test only the configured connections
+
 
 **Credits**
 
