@@ -11,7 +11,7 @@ debug = False
 createIndex = False
 useConfigFile = True
 
-peerIdents = ["WebHoneypot", "Webpage", "Dionaea", "Network(Dionaea)", "honeytrap", "Network(honeytrap)", "kippo", "SSH/console(cowrie)",
+peerIdents = ["WebHoneypot", "Webpage", "Dionaea", "Network(Dionaea)", "honeytrap", "Network(honeytrap)", "kippo", "SSH/console(cowrie)", "cowrie", "SSH/console(cowrie)",
               "glastopf", "Webpage", ".gt3", "Webpage",".dio", "Network", ".kip", "SSH/console", "", ""]
 
 
