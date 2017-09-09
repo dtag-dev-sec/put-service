@@ -221,6 +221,8 @@ def postSimpleMessage():
 if (createIndex):
     print ("Info: Just creating an index " + esindex)
     elastic.initIndex(elasticHost, esindex)
+elif (testSettings):
+    print ("Checking all connections based on supplied settings")
 
 else:
 
