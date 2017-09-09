@@ -6,7 +6,7 @@ from datetime import datetime
 
 # local variable init defaults
 localServer, esindex, localPort, elasticHost, mongohost, mongoport, slackuse, slacktoken = "127.0.0.1", "ews", "8080", "127.0.0.1", "127.0.0.1", "27017", "no", ""
-debug, testSettings, createIndex, useConfigFile = False, False, False, False
+debug, testSettings, createIndex = False, False, False
 
 
 peerIdents = ["WebHoneypot", "Webpage", "Dionaea", "Network(Dionaea)", "honeytrap", "Network(honeytrap)", "kippo", "SSH/console(cowrie)", "cowrie", "SSH/console(cowrie)",
@@ -16,7 +16,6 @@ peerIdents = ["WebHoneypot", "Webpage", "Dionaea", "Network(Dionaea)", "honeytra
 #
 # Function area
 #
-
 def logger(func):
     def wrapper(*args, **kwargs):
         log = open('/var/log/ewsput.txt', 'a')
@@ -216,7 +215,14 @@ def postSimpleMessage():
 # main program code
 #
 
-(elasticHost, esindex, localServer, localPort, mongoport, mongohost,  createIndex, useConfigFile, debug, testSettings) = config.readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug, testSettings)
+(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, debug, slacktoken, slackuse) = config.readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost, debug,
+                                   slacktoken, slackuse)
+
+
+# first read data from command line
+(elasticHost, esindex, localServer, localPort, mongoport, mongohost,  createIndex, debug, testSettings) = config.readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, debug, testSettings)
+
+
 
 if (createIndex):
     print ("Info: Just creating an index " + esindex)
@@ -225,12 +231,6 @@ elif (testSettings):
     print ("Checking all connections based on supplied settings")
 
 else:
-
-    if (useConfigFile):
-        print ("Info: Using configfile")
-        (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex,debug, slacktoken, slackuse) = config.readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohost, debug, slacktoken, slackuse)
-    if debug:
-        print("Info: Running in debug mode")
 
     #
     # start server depending on parameters given from shell or config file

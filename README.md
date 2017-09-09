@@ -18,9 +18,13 @@ Install Maxmind GeoIP libraries at /var/lib/
     GeoIP.dat
     GeoCity.dat
     GeoIPASNum.dat
+    
+**Then let the code create a new index** 
+
+    python3 worker.py -c -p 9933 -b 192.168.1.64 -u 192.168.1.64 -i ews-2017.1
 
 
-**Example command line**
+**Example command line for running the backend (command line settings override config file)**
 
     python3 worker.py -p 9933 -b 192.168.1.64 -u 192.168.1.64 -i ews-2017.1
 
@@ -43,6 +47,30 @@ Install Maxmind GeoIP libraries at /var/lib/
 
 -t test only the configured connections
 
+
+**Config file**
+
+The config file is located at /etcews/ewsput.cfg
+
+    [home]
+    ip= {{ LOCAL_LISTEN_IP }}
+    port= {{ LOCAL_LISTEN_PORT }}
+   
+    [mongo]
+    ip= {{ MONGO_IP }}
+    port= {{ MONGO_PORT }}
+    
+    [elasticsearch]
+    port= {{ ELASTIC_PORT }}
+    ip= {{ ELASTIC_IP }}
+    index= {{ ELASTIC_INDEX }}
+    
+    [general]
+    debug=0
+    
+    [slack]
+    use= {{ SLACK_USE }}
+    token= {{ SLACK_TOKEN }}
 
 **Credits**
 
