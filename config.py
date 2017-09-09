@@ -31,7 +31,7 @@ def readconfig(elasticHost, esindex, localServer, localPort, mongoport, mongohos
     return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, False, debug, slacktoken, slackuse)
 
 
-def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug, testSettings):
+def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, debug, testSettings):
 
     #
     # Read command line args
@@ -40,7 +40,6 @@ def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mon
     debugCmd = "0"
 
     for o, a in myopts:
-        useConfigFile = False
 
         if o == '-u':
             elasticHost = a
@@ -66,4 +65,4 @@ def readCommandLine(elasticHost, esindex, localServer, localPort, mongoport, mon
     else:
         debug = False
 
-    return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, useConfigFile, debug, testSettings)
+    return (elasticHost, esindex, localServer, localPort, mongoport, mongohost, createIndex, debug, testSettings)
