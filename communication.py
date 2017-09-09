@@ -5,6 +5,9 @@ from slackclient import SlackClient
 #
 def sendSlack(channel, token, message):
 
+    #
+    # simple input validation
+    #
     if channel is None or token is None or message is None:
         return
 
