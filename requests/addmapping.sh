@@ -50,3 +50,32 @@ curl -XPUT 'localhost:9200/ews2017.1/_mapping/Alert?pretty' -H 'Content-Type: ap
   }
 }
 '
+
+curl -XPUT 'localhost:9200/ews2017.1/_mapping/IP?pretty' -H 'Content-Type: application/json' -d'
+{
+  "properties": {
+
+
+
+                    "ip": {
+                        "type": "ip"
+                    },
+                    "longitude": {
+                        "type": "text"
+                    },
+                    "latitude": {
+                        "type": "text"
+                    },
+                    "asn": {
+                        "type": "text"
+                    },
+                    "country": {
+                        "type": "text"
+                    },
+                                        "countyname": {
+                        "type": "text"
+                    }
+
+  }
+}
+'
