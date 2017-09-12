@@ -72,7 +72,7 @@ curl -XPUT 'localhost:9200/ews2017.1/_mapping/IP?pretty' -H 'Content-Type: appli
                     "country": {
                         "type": "text"
                     },
-                                        "countyname": {
+                    "countyname": {
                         "type": "text"
                     }
 

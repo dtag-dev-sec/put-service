@@ -103,12 +103,90 @@ def initIndex(host, index):
                     }
 
                 }
+            },
+
+            "IP": {
+                "properties": {
+                    "ip": {
+                        "type": "ip"
+                    },
+                    "longitude": {
+                        "type": "text"
+                    },
+                    "latitude": {
+                        "type": "text"
+                    },
+                    "country": {
+                        "type": "text"
+                    },
+                    "asn": {
+                        "type": "text"
+                    },
+                    "countyname": {
+                        "type": "text"
+                    }
+
+                }
             }
 
         }
     }
     # create index
     es.indices.create(index=index, ignore=400, body=settings)
+
+
+
+#
+# checks, if a given cve is existing already
+#
+def ipExisting(ip, host, index):
+
+    es = Elasticsearch(host)
+
+    query = '{"query":{"bool":{"must":[{"query_string":{"default_field":"ip","query":"' + ip + '"}}],"must_not":[],"should":[]}},"from":0,"size":10,"sort":[],"aggs":{}}'
+
+    res = es.search(index=index, doc_type="IP", body=query)
+
+    for hit in res['hits']['hits']:
+
+        return True
+
+    return False
+
+
+#
+# store ip
+#
+def putIP(ip, elasticHost, esindex, country, countryname, asn, debug):
+
+    m = hashlib.md5()
+    m.update((ip).encode())
+
+    vuln = {
+        "asn": asn,
+        "countryname": countryname,
+        "ip": ip,
+        "country": country
+
+    }
+
+    if debug:
+        print("Not storing ip: " + str(ip))
+        return 0
+
+    try:
+        es = Elasticsearch(elasticHost)
+        res = es.index(index=esindex, doc_type='IP', id=m.hexdigest(), body=vuln)
+        return 0
+
+    except:
+        print ("Error when persisting IP " + ip)
+        return 1
+
+
+
+
+
 
 
 #
